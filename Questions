@@ -1,5 +1,5 @@
 
--- ------------------- 1 ----------------------------------------------------------
+-- ------------------- Question 1 ----------------------------------------------------------
 -- Lista antalet produkter per kategori. Listningen ska innehålla kategori-namn och antalet produkter. 
 
 select c.name category, sum(quantity)  
@@ -11,7 +11,7 @@ on c.id = sc.Fk_category_id
 group by category ;
 
 
--- ------------------- 2 ----------------------------------------------------------
+-- ------------------- Question 2 ----------------------------------------------------------
 -- Skapa en kundlista med den totala summan pengar som varje kund har handlat för. Kundens för- och efternamn, 
 -- samt det totala värdet som varje person har shoppats för, skall visas.
 SELECT 
@@ -28,7 +28,7 @@ FROM
 GROUP BY FK_order_id
 order by Total_purchase_amount desc ;
 
--- ------------------- 3 ----------------------------------------------------------
+-- -------------------Question 3 ----------------------------------------------------------
 -- Vilka kunder har köpt svarta sandaler i storlek 38 av märket Ecco? Lista deras namn. 
 SELECT 
     cust.name AS bought_ECCO_39_white
@@ -46,7 +46,7 @@ WHERE
     color = 'white' AND size = 39
         AND br.name = 'Ecco';
 
--- ------------------- 4 ----------------------------------------------------------
+-- -------------------Question 4 ----------------------------------------------------------
 --  Skriv ut en lista på det totala beställningsvärdet per ort där beställningsvärdet är större än 1000 kr. 
 --  Ortnamn och värde ska visas. 
 --  (det måste finnas orter i databasen där det har handlats för mindre än 1000 kr för att visa att frågan är korrekt formulerad)
@@ -62,7 +62,7 @@ WHERE
     GROUP BY country
 HAVING Sold_amount > 10000;
 
--- ------------------- 5 ---------------------------------------------------------
+-- -------------------Question 5 ---------------------------------------------------------
 --  Skapa en topp-5 lista av de mest sålda produkterna. 
 
 SELECT 
@@ -85,7 +85,7 @@ GROUP BY shoes_id
 ORDER BY quantity DESC
 LIMIT 5;
 
--- ------------------- 6 ---------------------------------------------------------
+-- -------------------Question 6 ---------------------------------------------------------
 -- Vilken månad hade du den största försäljningen? 
 -- (det måste finnas data som anger försäljning för mer än en månad i databasen för att visa att frågan är korrekt formulerad)
 
