@@ -1,6 +1,15 @@
 
--- ------------------- Question 1 ----------------------------------------------------------
+-- ------------------- 1 ----------------------------------------------------------
 -- Lista antalet produkter per kategori. Listningen ska innehålla kategori-namn och antalet produkter. 
+
+select c.name category, count(sh.id) as sort_of_shoes,sum(quantity)  
+from shoes_category sc  
+join shoes sh 
+on sh.id =  sc.FK_shoes_id
+join category c 
+on c.id = sc.Fk_category_id
+group by category ;
+
 
 select c.name category, sum(quantity)  
 from shoes_category sc  
@@ -11,10 +20,11 @@ on c.id = sc.Fk_category_id
 group by category ;
 
 
--- ------------------- Question 2 ----------------------------------------------------------
+-- ------------------- 2 ----------------------------------------------------------
 -- Skapa en kundlista med den totala summan pengar som varje kund har handlat för. Kundens för- och efternamn, 
 -- samt det totala värdet som varje person har shoppats för, skall visas.
-SELECT 
+
+ SELECT 
     cust.name AS customer_name,
     SUM(sh.price * oi.quantity) AS Total_purchase_amount
 FROM
@@ -22,14 +32,30 @@ FROM
         JOIN
     orders ord ON ord.id = oi.FK_order_id
         JOIN
-    customer cust ON ord.id = cust.id
+    customer cust ON ord.FK_customer_id = cust.id
         JOIN
     shoes sh ON oi.FK_shoes_id = sh.id
-GROUP BY FK_order_id
+GROUP BY cust.name
 order by Total_purchase_amount desc ;
 
--- -------------------Question 3 ----------------------------------------------------------
+-- Detalj -----
+SELECT 
+    ord.id,
+    cust.name AS customer_name,
+    sh.id,
+    sh.price * oi.quantity AS Total_purchase_amount
+FROM
+    order_line_item oi
+        JOIN
+    orders ord ON ord.id = oi.FK_order_id
+        JOIN
+    customer cust ON ord.FK_customer_id = cust.id
+         JOIN
+    shoes sh ON oi.FK_shoes_id = sh.id;
+
+-- ------------------- 3 ----------------------------------------------------------
 -- Vilka kunder har köpt svarta sandaler i storlek 38 av märket Ecco? Lista deras namn. 
+
 SELECT 
     cust.name AS bought_ECCO_39_white
 FROM
@@ -37,7 +63,7 @@ FROM
         JOIN
     orders ord ON ord.id = order_item.FK_order_id
         JOIN
-    customer cust ON ord.id = cust.id
+    customer cust ON ord.FK_customer_id = cust.id
         JOIN
     shoes sh ON sh.id = order_item.FK_shoes_id
         JOIN
@@ -46,23 +72,26 @@ WHERE
     color = 'white' AND size = 39
         AND br.name = 'Ecco';
 
--- -------------------Question 4 ----------------------------------------------------------
+-- ------------------- 4 ----------------------------------------------------------
 --  Skriv ut en lista på det totala beställningsvärdet per ort där beställningsvärdet är större än 1000 kr. 
 --  Ortnamn och värde ska visas. 
 --  (det måste finnas orter i databasen där det har handlats för mindre än 1000 kr för att visa att frågan är korrekt formulerad)
 
-    SELECT 
-	cust.country AS Country,
-	SUM(sh.price * oi.quantity) AS Sold_amount
-    FROM
-        order_line_item AS oi
-    JOIN orders ord ON ord.id = oi.FK_order_id
-    JOIN customer cust ON ord.id = cust.id
-    JOIN shoes sh ON oi.FK_shoes_id = sh.id
-    GROUP BY country
+SELECT 
+    cust.address AS Country,
+    SUM(sh.price * oi.quantity) AS Sold_amount
+FROM
+    order_line_item AS oi
+        JOIN
+    orders ord ON ord.id = oi.FK_order_id
+        JOIN
+    customer cust ON ord.FK_customer_id = cust.id
+        JOIN
+    shoes sh ON oi.FK_shoes_id = sh.id
+GROUP BY address
 HAVING Sold_amount > 10000;
 
--- -------------------Question 5 ---------------------------------------------------------
+-- ------------------- 5 ---------------------------------------------------------
 --  Skapa en topp-5 lista av de mest sålda produkterna. 
 
 SELECT 
@@ -85,7 +114,7 @@ GROUP BY shoes_id
 ORDER BY quantity DESC
 LIMIT 5;
 
--- -------------------Question 6 ---------------------------------------------------------
+-- ------------------- 6 ---------------------------------------------------------
 -- Vilken månad hade du den största försäljningen? 
 -- (det måste finnas data som anger försäljning för mer än en månad i databasen för att visa att frågan är korrekt formulerad)
 
