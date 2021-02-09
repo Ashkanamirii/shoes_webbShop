@@ -62,7 +62,7 @@ primary key(FK_category_id, FK_shoes_id),-- undvika att man gör dubbel lagring
 -- det märket också ska tas bort ur Shoes_category-tabellen
 -- men om en category updaterats då blir också updaterats posten här.
 foreign key(FK_category_id) references Category(id) on update cascade,
-foreign key(FK_shoes_id) references Shoes(id)on delete cascade,
+foreign key(FK_shoes_id) references Shoes(id)on delete cascade on update cascade,
 created timestamp DEFAULT CURRENT_TIMESTAMP,
 updated timestamp ON UPDATE CURRENT_TIMESTAMP
 
@@ -71,11 +71,11 @@ updated timestamp ON UPDATE CURRENT_TIMESTAMP
 create table Orders(
 
 id int not null auto_increment primary key,
-FK_customer_id int not null, 
+FK_customer_id int , 
 created timestamp DEFAULT current_timestamp,
 orders_comment varchar(255) DEFAULT 'NI ÄR FANTASTIKA', 
 order_date date not null,
-foreign key (FK_customer_id) references Customer(id) on update cascade, -- om vi vill ändra address för customer!!
+foreign key (FK_customer_id) references Customer(id) on delete set null on update cascade,
 updated timestamp ON UPDATE CURRENT_TIMESTAMP
 
 );
@@ -86,8 +86,8 @@ FK_shoes_id int not null,
 FK_order_id int not null, 
 primary key(FK_shoes_id, FK_order_id),
 quantity int not null,
-foreign key (FK_shoes_id) references Shoes(id)on delete cascade,
-foreign key (FK_order_id) references Orders(id)on delete cascade,
+foreign key (FK_shoes_id) references Shoes(id) on update cascade,
+foreign key (FK_order_id) references Orders(id)on update cascade,
 created timestamp DEFAULT CURRENT_TIMESTAMP,
 updated timestamp ON UPDATE CURRENT_TIMESTAMP
 
